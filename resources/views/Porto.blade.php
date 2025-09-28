@@ -903,7 +903,7 @@
 				</div>
 				<div class="hero-image fadeInUp">
 					<img
-						src="poy.png"
+						src="{{ asset('assets/poy.png') }}"
 						alt="Foto Profil"
 						class="profile-img"
 					/>
