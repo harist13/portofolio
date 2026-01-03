@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 
 // Public routes
 Route::get('/', [PortoController::class, 'index'])->name('index');
+Route::get('/portfolio/export-pdf', [PortoController::class, 'exportPdf'])->name('portfolio.export-pdf');
 
 // Login routes
 Route::get('/login', [LoginController::class, 'login'])->name('login');

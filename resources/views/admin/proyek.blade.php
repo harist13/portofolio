@@ -34,6 +34,7 @@
         <th class="p-3">Nama</th>
         <th class="p-3">Gambar</th>
         <th class="p-3">Tech</th>
+        <th class="p-3">Format</th>
         <th class="p-3">Deskripsi</th>
         <th class="p-3">Link</th>
         <th class="p-3">Aksi</th>
@@ -54,7 +55,20 @@
           @endif
         </td>
         <td class="p-3">{{ $project->tech }}</td>
-        <td class="p-3">{{ Str::limit($project->deskripsi, 50) }}</td>
+        <td class="p-3">
+          @if(str_contains($project->deskripsi, '<ul>') || str_contains($project->deskripsi, '<li>'))
+            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">List</span>
+          @else
+            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Paragraf</span>
+          @endif
+        </td>
+        <td class="p-3">
+          @if(str_contains($project->deskripsi, '<ul>') || str_contains($project->deskripsi, '<li>'))
+            {!! Str::limit(strip_tags($project->deskripsi), 50) !!}
+          @else
+            {{ Str::limit($project->deskripsi, 50) }}
+          @endif
+        </td>
         <td class="p-3">
           <a href="{{ $project->link }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">Kunjungi</a>
         </td>
@@ -67,7 +81,7 @@
       </tr>
       @empty
       <tr class="border-t">
-        <td colspan="7" class="p-3 text-center text-gray-500">Tidak ada data proyek</td>
+        <td colspan="8" class="p-3 text-center text-gray-500">Tidak ada data proyek</td>
       </tr>
       @endforelse
     </tbody>
@@ -94,8 +108,23 @@
         <input type="text" name="tech" placeholder="Contoh: Laravel, React, Vue" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
       </div>
       <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Format Deskripsi</label>
+        <select name="format_type" onchange="toggleDescriptionFormat(this.value, 'add')" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="paragraph">Paragraf</option>
+          <option value="list">List</option>
+        </select>
+        <small class="text-gray-500">Pilih format tampilan deskripsi</small>
+      </div>
+      <div class="mb-3">
         <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-        <textarea name="deskripsi" rows="4" placeholder="Deskripsi proyek (minimal 20 karakter)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required></textarea>
+        <div id="add-paragraph-input">
+          <textarea name="deskripsi" rows="4" placeholder="Deskripsi proyek (minimal 20 karakter)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required></textarea>
+          <small class="text-gray-500">Pisahkan paragraf dengan 2 baris kosong (Enter Enter)</small>
+        </div>
+        <div id="add-list-input" style="display: none;">
+          <textarea name="deskripsi_list" rows="4" placeholder="- Item pertama&#10;- Item kedua&#10;- Item ketiga" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+          <small class="text-gray-500">Tulis setiap item dengan tanda dash (-) di awal baris baru</small>
+        </div>
       </div>
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-1">Link URL</label>
@@ -130,8 +159,23 @@
         <input type="text" name="tech" id="editTech" placeholder="Contoh: Laravel, React, Vue" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
       </div>
       <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Format Deskripsi</label>
+        <select name="format_type" id="editFormatType" onchange="toggleDescriptionFormat(this.value, 'edit')" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="paragraph">Paragraf</option>
+          <option value="list">List</option>
+        </select>
+        <small class="text-gray-500">Pilih format tampilan deskripsi</small>
+      </div>
+      <div class="mb-3">
         <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-        <textarea name="deskripsi" id="editDeskripsi" rows="4" placeholder="Deskripsi proyek (minimal 20 karakter)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required></textarea>
+        <div id="edit-paragraph-input">
+          <textarea name="deskripsi" id="editDeskripsi" rows="4" placeholder="Deskripsi proyek (minimal 20 karakter)" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" required></textarea>
+          <small class="text-gray-500">Pisahkan paragraf dengan 2 baris kosong (Enter Enter)</small>
+        </div>
+        <div id="edit-list-input" style="display: none;">
+          <textarea name="deskripsi_list" id="editDeskripsiList" rows="4" placeholder="- Item pertama&#10;- Item kedua&#10;- Item ketiga" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+          <small class="text-gray-500">Tulis setiap item dengan tanda dash (-) di awal baris baru</small>
+        </div>
       </div>
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-1">Link URL</label>
@@ -159,11 +203,56 @@
     modal.style.display = 'flex';
   }
 
+  function toggleDescriptionFormat(format, mode) {
+    const paragraphInput = document.getElementById(`${mode}-paragraph-input`);
+    const listInput = document.getElementById(`${mode}-list-input`);
+    
+    if (format === 'list') {
+      paragraphInput.style.display = 'none';
+      listInput.style.display = 'block';
+      // Clear paragraph input and set required on list input
+      if (mode === 'add') {
+        document.querySelector(`#${mode}-paragraph-input textarea`).required = false;
+        document.querySelector(`#${mode}-list-input textarea`).required = true;
+      }
+    } else {
+      paragraphInput.style.display = 'block';
+      listInput.style.display = 'none';
+      // Clear list input and set required on paragraph input
+      if (mode === 'add') {
+        document.querySelector(`#${mode}-list-input textarea`).required = false;
+        document.querySelector(`#${mode}-paragraph-input textarea`).required = true;
+      }
+    }
+  }
+
   function openEditModal(id, nama, tech, deskripsi, link) {
     document.getElementById('editNama').value = nama;
     document.getElementById('editTech').value = tech;
-    document.getElementById('editDeskripsi').value = deskripsi;
     document.getElementById('editLink').value = link;
+    
+    // Auto-detect format type
+    let formatType = 'paragraph';
+    if (deskripsi.includes('<ul>') || deskripsi.includes('<li>')) {
+      formatType = 'list';
+    }
+    
+    // Set format type
+    document.getElementById('editFormatType').value = formatType;
+    toggleDescriptionFormat(formatType, 'edit');
+    
+    // Set description based on format
+    if (formatType === 'list') {
+      // Convert HTML list back to dash format for editing
+      const listContent = deskripsi.replace(/<ul>/g, '').replace(/<\/ul>/g, '')
+                                  .replace(/<li>/g, '- ').replace(/<\/li>/g, '\n')
+                                  .trim();
+      document.getElementById('editDeskripsiList').value = listContent;
+      document.getElementById('editDeskripsi').value = deskripsi; // Keep original for fallback
+    } else {
+      document.getElementById('editDeskripsi').value = deskripsi;
+    }
+    
     document.getElementById('formEditProyek').action = `/admin/proyek/${id}`;
     const modal = document.getElementById('modalEditProyek');
     modal.style.display = 'flex';
@@ -195,5 +284,48 @@
       closeModal('modalEditProyek');
     }
   });
+
+  // Handle form submission for formatting
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle Add Form
+    const addForm = document.querySelector('#modalAddProyek form');
+    addForm.addEventListener('submit', function(e) {
+      const formatType = document.querySelector('#modalAddProyek select[name="format_type"]').value;
+      if (formatType === 'list') {
+        const listText = document.querySelector('#modalAddProyek textarea[name="deskripsi_list"]').value;
+        const paragraphTextarea = document.querySelector('#modalAddProyek textarea[name="deskripsi"]');
+        paragraphTextarea.value = formatListToHtml(listText);
+      }
+    });
+
+    // Handle Edit Form
+    const editForm = document.querySelector('#modalEditProyek form');
+    editForm.addEventListener('submit', function(e) {
+      const formatType = document.querySelector('#modalEditProyek select[name="format_type"]').value;
+      if (formatType === 'list') {
+        const listText = document.querySelector('#modalEditProyek textarea[name="deskripsi_list"]').value;
+        const paragraphTextarea = document.querySelector('#modalEditProyek textarea[name="deskripsi"]');
+        paragraphTextarea.value = formatListToHtml(listText);
+      }
+    });
+  });
+
+  function formatListToHtml(listText) {
+    // Convert list format to HTML
+    const lines = listText.split('\n').filter(line => line.trim() !== '');
+    const listItems = lines.map(line => {
+      // Remove dash and trim
+      const item = line.replace(/^-\s*/, '').trim();
+      return item;
+    }).filter(item => item !== '');
+    
+    return '<ul><li>' + listItems.join('</li><li>') + '</li></ul>';
+  }
+
+  function formatParagraphToHtml(paragraphText) {
+    // Convert paragraphs (separated by double line breaks) to HTML
+    const paragraphs = paragraphText.split('\n\n').filter(p => p.trim() !== '');
+    return '<p>' + paragraphs.join('</p><p>') + '</p>';
+  }
 </script>
 @endpush

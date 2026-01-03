@@ -1,1258 +1,611 @@
 <!DOCTYPE html>
-<html lang="id">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Portofolio Pribadi | Muhammad Harist Illyasa</title>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-		/>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap"
-			rel="stylesheet"
-		/>
-		<style>
-			:root {
-				--primary: #1a2b3c;
-				--secondary: #f0b90b;
-				--accent: #2c3e50;
-				--light: #ffffff;
-				--dark: #0d1520;
-				--gray: #f5f7fa;
-				--transition: all 0.3s ease;
-			}
-
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-			}
-
-			body {
-				font-family: "Poppins", sans-serif;
-				line-height: 1.6;
-				color: var(--dark);
-				background-color: var(--light);
-				overflow-x: hidden;
-			}
-
-			h1,
-			h2,
-			h3,
-			h4 {
-				font-family: "Playfair Display", serif;
-				font-weight: 700;
-				margin-bottom: 1rem;
-				color: var(--primary);
-			}
-
-			h1 {
-				font-size: 3.5rem;
-				line-height: 1.2;
-			}
-
-			h2 {
-				font-size: 2.5rem;
-				position: relative;
-				display: inline-block;
-				margin-bottom: 2.5rem;
-			}
-
-			h2::after {
-				content: "";
-				position: absolute;
-				bottom: -10px;
-				left: 0;
-				width: 60%;
-				height: 4px;
-				background: var(--secondary);
-				border-radius: 2px;
-			}
-
-			p {
-				margin-bottom: 1.5rem;
-			}
-
-			a {
-				text-decoration: none;
-				color: inherit;
-				transition: var(--transition);
-			}
-
-			.container {
-				width: 90%;
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 0 20px;
-			}
-
-			.btn {
-				display: inline-block;
-				padding: 12px 30px;
-				border-radius: 30px;
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				transition: var(--transition);
-				cursor: pointer;
-				border: none;
-				font-size: 0.9rem;
-			}
-
-			.btn-primary {
-				background: var(--secondary);
-				color: var(--primary);
-				box-shadow: 0 4px 15px rgba(240, 185, 11, 0.3);
-			}
-
-			.btn-primary:hover {
-				transform: translateY(-3px);
-				box-shadow: 0 6px 20px rgba(240, 185, 11, 0.4);
-			}
-
-			.btn-outline {
-				background: transparent;
-				border: 2px solid var(--secondary);
-				color: var(--secondary);
-				margin-left: 15px;
-			}
-
-			.btn-outline:hover {
-				background: var(--secondary);
-				color: var(--primary);
-			}
-
-			section {
-				padding: 100px 0;
-			}
-
-			/* Modal Styling */
-			.modal {
-				display: none;
-				position: fixed;
-				z-index: 2000;
-				padding-top: 60px;
-				left: 0; top: 0;
-				width: 100%; height: 100%;
-				background-color: rgba(0,0,0,0.7);
-				overflow: auto;
-				animation: fadeIn 0.3s ease-in-out;
-			}
-
-			.modal-content {
-				background: var(--light);
-				margin: auto;
-				padding: 20px;
-				border-radius: 10px;
-				max-width: 600px;
-				position: relative;
-				text-align: center;
-				animation: zoomIn 0.3s ease;
-			}
-
-			.modal-content img {
-				width: 100%;
-				border-radius: 10px;
-				margin-bottom: 15px;
-			}
-
-			.close {
-				position: absolute;
-				top: 15px;
-				right: 20px;
-				font-size: 1.5rem;
-				color: #333;
-				cursor: pointer;
-			}
-
-			@keyframes fadeIn {
-				from {opacity: 0;} to {opacity: 1;}
-			}
-
-			@keyframes zoomIn {
-				from {transform: scale(0.8);} to {transform: scale(1);}
-			}
-
-
-			.text-center {
-				text-align: center;
-			}
-
-			/* Header & Navigation */
-			header {
-				background: rgba(26, 43, 60, 0.95);
-				padding: 20px 0;
-				position: sticky;
-				top: 0;
-				z-index: 1000;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-			}
-
-			.header-container {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-
-			.logo {
-				font-size: 1.8rem;
-				font-weight: 700;
-				color: var(--light);
-			}
-
-			.logo span {
-				color: var(--secondary);
-			}
-
-			nav ul {
-				display: flex;
-				list-style: none;
-			}
-
-			nav ul li {
-				margin-left: 30px;
-			}
-
-			nav ul li a {
-				color: var(--light);
-				font-weight: 500;
-				position: relative;
-				padding: 5px 0;
-			}
-
-			nav ul li a::after {
-				content: "";
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				width: 0;
-				height: 2px;
-				background: var(--secondary);
-				transition: var(--transition);
-			}
-
-			nav ul li a:hover::after {
-				width: 100%;
-			}
-
-			nav ul li a:hover {
-				color: var(--secondary);
-			}
-
-			.hamburger {
-				display: none;
-				cursor: pointer;
-				background: transparent;
-				border: none;
-				color: var(--light);
-				font-size: 1.5rem;
-			}
-
-			/* Hero Section */
-			.hero {
-				background: linear-gradient(
-					135deg,
-					var(--primary) 0%,
-					var(--dark) 100%
-				);
-				color: var(--light);
-				padding: 150px 0 100px;
-				position: relative;
-				overflow: hidden;
-			}
-
-			.hero::before {
-				content: "";
-				position: absolute;
-				top: -50px;
-				right: -50px;
-				width: 300px;
-				height: 300px;
-				border-radius: 50%;
-				background: rgba(240, 185, 11, 0.1);
-			}
-
-			.hero-content {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-			}
-
-			.hero-text {
-				flex: 1;
-				padding-right: 50px;
-				z-index: 2;
-			}
-
-			.hero-text h1 {
-				color: var(--light);
-				margin-bottom: 20px;
-			}
-
-			.hero-text h1 span {
-				color: var(--secondary);
-			}
-
-			.hero-text p {
-				font-size: 1.2rem;
-				margin-bottom: 30px;
-				opacity: 0.9;
-			}
-
-			.hero-image {
-				flex: 1;
-				display: flex;
-				justify-content: center;
-				z-index: 2;
-			}
-
-			.profile-img {
-				width: 350px;
-				height: 350px;
-				border-radius: 50%;
-				border: 5px solid var(--secondary);
-				object-fit: cover;
-				box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-				transition: var(--transition);
-			}
-
-			.profile-img:hover {
-				transform: scale(1.03);
-			}
-
-			/* About Section */
-			.about {
-				background: var(--gray);
-			}
-
-			.about-content {
-				display: flex;
-				align-items: center;
-				gap: 50px;
-			}
-
-			.about-text {
-				flex: 1;
-			}
-
-			.about-text h2::after {
-				width: 40%;
-			}
-
-			.about-text p {
-				font-size: 1.1rem;
-				margin-bottom: 20px;
-			}
-
-			.skills {
-				display: flex;
-				flex-wrap: wrap;
-				margin-top: 20px;
-			}
-
-			.skill {
-				background: var(--light);
-				padding: 8px 20px;
-				margin: 5px 10px 5px 0;
-				border-radius: 30px;
-				font-size: 0.9rem;
-				box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-				transition: var(--transition);
-			}
-
-			.skill:hover {
-				background: var(--secondary);
-				color: var(--primary);
-				transform: translateY(-3px);
-			}
-
-			/* Portfolio Section */
-			.portfolio {
-				background: var(--light);
-				padding-top: 50px; /* Kurangi padding top */
-			}
-
-			.portfolio-header {
-				text-align: center;
-				margin-bottom: 50px;
-			}
-
-			.portfolio-header h2::after {
-				left: 50%;
-				transform: translateX(-50%);
-			}
-
-			.portfolio-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-				gap: 30px;
-			}
-
-			.portfolio-card {
-				background: var(--light);
-				border-radius: 10px;
-				overflow: hidden;
-				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-				transition: var(--transition);
-				position: relative;
-			}
-
-			.portfolio-card:hover {
-				transform: translateY(-10px);
-				box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-			}
-
-			.portfolio-img {
-				width: 100%;
-				height: 250px;
-				object-fit: cover;
-				display: block;
-			}
-
-			.portfolio-content {
-				padding: 20px;
-				height: 140px; /* Fixed height untuk konsistensi */
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-			}
-
-			.portfolio-content h3 {
-				font-size: 1.3rem;
-				margin-bottom: 8px;
-				line-height: 1.3;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-
-			.portfolio-content p {
-				color: #666;
-				margin-bottom: 0;
-				font-size: 0.9rem;
-				line-height: 1.4;
-				overflow: hidden;
-				display: -webkit-box;
-				-webkit-line-clamp: 3; /* Batasi maksimal 3 baris */
-				-webkit-box-orient: vertical;
-				text-overflow: ellipsis;
-				flex-grow: 1;
-			}
-
-			.portfolio-overlay {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(26, 43, 60, 0.95);
-				color: var(--light);
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				padding: 25px;
-				opacity: 0;
-				transition: var(--transition);
-			}
-
-			.portfolio-card:hover .portfolio-overlay {
-				opacity: 1;
-			}
-
-			.portfolio-overlay h3 {
-				color: var(--secondary);
-				margin-bottom: 15px;
-				text-align: center;
-				font-size: 1.4rem;
-				line-height: 1.3;
-			}
-
-			.portfolio-overlay p {
-				text-align: center;
-				margin-bottom: 20px;
-				font-size: 0.9rem;
-				line-height: 1.4;
-				overflow: hidden;
-				display: -webkit-box;
-				-webkit-line-clamp: 4; /* Batasi maksimal 4 baris di overlay */
-				-webkit-box-orient: vertical;
-				text-overflow: ellipsis;
-			}
-
-			/* Contact Section */
-			.contact {
-				background: var(--gray);
-			}
-
-			.contact-container {
-				display: flex;
-				gap: 50px;
-			}
-
-			.contact-form {
-				flex: 1;
-			}
-
-			.form-group {
-				margin-bottom: 20px;
-			}
-
-			.form-group label {
-				display: block;
-				margin-bottom: 8px;
-				font-weight: 500;
-			}
-
-			.form-control {
-				width: 100%;
-				padding: 12px 15px;
-				border: 1px solid #ddd;
-				border-radius: 5px;
-				font-family: "Poppins", sans-serif;
-				font-size: 1rem;
-				transition: var(--transition);
-			}
-
-			.form-control:focus {
-				border-color: var(--secondary);
-				outline: none;
-				box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
-			}
-
-			textarea.form-control {
-				min-height: 150px;
-				resize: vertical;
-			}
-			
-			.contact-container {
-    display: flex;
-    justify-content: center;
-}
-
-.contact-card {
-    background: var(--light);
-    padding: 45px 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    max-width: 520px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid rgba(240, 185, 11, 0.1);
-}
-
-.contact-card h3 {
-    margin-bottom: 25px;
-    color: var(--primary);
-    font-size: 1.3rem;
-}
-
-.contact-details {
-    margin-bottom: 40px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    margin-bottom: 25px;
-    padding: 5px 0;
-}
-
-.contact-icon {
-    background: var(--secondary);
-    color: var(--primary);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-.contact-text h4 {
-    margin: 0;
-    font-size: 1rem;
-}
-
-.contact-text p {
-    margin: 0;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-
-			.contact-info {
-				flex: 1;
-			}
-
-			.contact-info h3 {
-				margin-bottom: 30px;
-			}
-
-			.contact-details {
-				margin-bottom: 30px;
-			}
-
-			.contact-item {
-				display: flex;
-				align-items: flex-start;
-				margin-bottom: 20px;
-			}
-
-			.contact-icon {
-				background: var(--primary);
-				color: var(--light);
-				width: 40px;
-				height: 40px;
-				border-radius: 50%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-right: 15px;
-				flex-shrink: 0;
-			}
-
-			.contact-text h4 {
-				margin-bottom: 5px;
-			}
-
-			.contact-text p {
-				margin-bottom: 0;
-				color: #555;
-			}
-
-			.social-links {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				gap: 20px;
-				margin-top: 30px;
-				flex-wrap: wrap;
-			}
-
-			.social-icon {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				width: 55px;
-				height: 55px;
-				border-radius: 50%;
-				background: var(--primary);
-				color: var(--light);
-				font-size: 1.4rem;
-				transition: var(--transition);
-				box-shadow: 0 4px 15px rgba(26, 43, 60, 0.2);
-				position: relative;
-				overflow: hidden;
-			}
-
-			.social-icon::before {
-				content: "";
-				position: absolute;
-				top: 0;
-				left: -100%;
-				width: 100%;
-				height: 100%;
-				background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-				transition: var(--transition);
-			}
-
-			.social-icon:hover::before {
-				left: 100%;
-			}
-
-			.social-icon:hover {
-				background: var(--secondary);
-				color: var(--primary);
-				transform: translateY(-5px) scale(1.1);
-				box-shadow: 0 8px 25px rgba(240, 185, 11, 0.3);
-			}
-
-			/* Timeline Section */
-			.timeline-section {
-				background: var(--light);
-				padding-bottom: 50px; /* Kurangi padding bottom */
-			}
-
-			.timeline {
-				position: relative;
-				margin-top: 30px;
-				padding-left: 30px;
-				border-left: 3px solid var(--secondary);
-			}
-
-			.timeline-item {
-				position: relative;
-				margin-bottom: 30px;
-			}
-
-			.timeline-icon {
-				position: absolute;
-				left: -17px;
-				top: 0;
-				background: var(--secondary);
-				color: var(--primary);
-				width: 30px;
-				height: 30px;
-				border-radius: 50%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 0.9rem;
-				box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-			}
-
-			.timeline-content {
-				background: var(--light);
-				padding: 15px 20px;
-				border-radius: 8px;
-				box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-			}
-
-			.timeline-content h4 {
-				margin-bottom: 5px;
-				font-size: 1.2rem;
-			}
-
-			.timeline-date {
-				font-size: 0.85rem;
-				color: #777;
-				display: block;
-				margin-bottom: 8px;
-			}
-
-
-			/* Footer */
-			footer {
-				background: var(--primary);
-				color: var(--light);
-				padding: 30px 0;
-				text-align: center;
-			}
-
-			.footer-content {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-			}
-
-			.footer-logo {
-				font-size: 1.8rem;
-				font-weight: 700;
-				margin-bottom: 20px;
-			}
-
-			.footer-logo span {
-				color: var(--secondary);
-			}
-
-			.copyright {
-				font-size: 0.9rem;
-				opacity: 0.8;
-			}
-
-			/* Responsive Design */
-			@media (max-width: 992px) {
-				h1 {
-					font-size: 3rem;
-				}
-
-				h2 {
-					font-size: 2.2rem;
-				}
-
-				.hero-content {
-					flex-direction: column;
-					text-align: center;
-				}
-
-				.hero-text {
-					padding-right: 0;
-					margin-bottom: 50px;
-				}
-
-				.about-content {
-					flex-direction: column;
-				}
-
-				.contact-container {
-					flex-direction: column;
-				}
-			}
-
-			@media (max-width: 768px) {
-				section {
-					padding: 80px 0;
-				}
-
-				.nav-menu {
-					position: fixed;
-					top: 70px;
-					right: -100%;
-					background: var(--primary);
-					width: 70%;
-					height: calc(100vh - 70px);
-					flex-direction: column;
-					align-items: center;
-					padding: 50px 0;
-					transition: var(--transition);
-				}
-
-				.nav-menu.active {
-					right: 0;
-				}
-
-				nav ul li {
-					margin: 15px 0;
-				}
-
-				.hamburger {
-					display: block;
-				}
-
-				.hero {
-					padding: 120px 0 80px;
-				}
-
-				.profile-img {
-					width: 280px;
-					height: 280px;
-				}
-
-				.btn-outline {
-					margin-left: 0;
-					margin-top: 15px;
-					display: block;
-				}
-			}
-
-			@media (max-width: 480px) {
-				h1 {
-					font-size: 2.5rem;
-				}
-
-				h2 {
-					font-size: 2rem;
-				}
-
-				.profile-img {
-					width: 220px;
-					height: 220px;
-				}
-
-				.portfolio-grid {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			/* Animations */
-			@keyframes fadeInUp {
-				from {
-					opacity: 0;
-					transform: translateY(30px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-
-			.fadeInUp {
-				animation: fadeInUp 0.8s ease forwards;
-			}
-		</style>
-	</head>
-	<body>
-		<!-- Header & Navigation -->
-		<header>
-			<div class="container header-container">
-				<a href="#" class="logo">Porto<span>folio</span></a>
-				<button class="hamburger" id="hamburger">
-					<i class="fas fa-bars"></i>
-				</button>
-				<nav>
-					<ul class="nav-menu" id="nav-menu">
-						<li><a href="#home">Beranda</a></li>
-						<li><a href="#about">Tentang Saya</a></li>
-						<li><a href="#portfolio">Portofolio</a></li>
-						<li><a href="#contact">Kontak</a></li>
-					</ul>
-				</nav>
-			</div>
-		</header>
-
-		<!-- Hero Section -->
-		<section class="hero" id="home">
-			<div class="container hero-content">
-				<div class="hero-text fadeInUp">
-					<h1>Halo, Saya <span>Muhammad Harist Illyasa</span></h1>
-					<p>
-						Full-Stack Web Developer dengan fokus pada
-						pengalaman pengguna yang luar biasa dan antarmuka yang menarik
-						secara visual.
-					</p>
-					<div class="hero-buttons">
-						<a href="#portfolio" class="btn btn-primary">Lihat Portofolio</a>
-						<a href="#contact" class="btn btn-outline">Hubungi Saya</a>
-					</div>
-				</div>
-				<div class="hero-image fadeInUp">
-					<img
-						src="{{ asset('assets/poy.png') }}"
-						alt="Foto Profil"
-						class="profile-img"
-					/>
-				</div>
-			</div>
-		</section>
-
-		<!-- About Section -->
-		<section class="about" id="about">
-			<div class="container">
-				<div class="about-content">
-					<div class="about-text fadeInUp">
-						<h2>Tentang Saya</h2>
-						<p>
-							Saya adalah seorang Programmer dan Web Developer dengan keahlian
-							dalam merancang, membangun, dan mengelola aplikasi web responsif.
-							Terampil menggunakan HTML, CSS, JavaScript, dan PHP, serta
-							memiliki pengalaman dalam pengembangan Front-End dan Back-End.
-							Saya mampu bekerja baik dalam tim maupun secara mandiri dengan
-							fokus pada solusi dan hasil yang optimal.
-						</p>
-						<p>
-							Lulusan Sistem Informasi Universitas Mulawarman dengan IPK 3.86,
-							saya menguasai pengembangan web Full-Stack menggunakan Laravel,
-							Tailwind CSS, dan MySQL, serta memiliki pengalaman dalam
-							perancangan database, API integration, testing, dan version
-							control. Berpengalaman mengerjakan berbagai proyek baik untuk
-							instansi pemerintah maupun perusahaan.
-						</p>
-						<p>
-							Saya memiliki soft skill seperti Critical Thinking, Problem
-							Solving, dan kemampuan bekerja dengan metode Agile & Scrum. Saya
-							juga terus mengikuti perkembangan teknologi terbaru untuk
-							memastikan setiap solusi yang saya buat relevan dan berkualitas
-							tinggi.
-						</p>
-
-						<h3>Keahlian</h3>
-						<div class="skills">
-							<span class="skill">Full-Stack Web Development</span>
-							<span class="skill">HTML5 & CSS3</span>
-							<span class="skill">JavaScript</span>
-							<span class="skill">PHP & Laravel</span>
-							<span class="skill">Tailwind CSS</span>
-							<span class="skill">SQL & Database Design</span>
-							<span class="skill">React JS</span>
-							<span class="skill">Jquery & Ajax</span>
-							<span class="skill">Node JS</span>
-							<span class="skill">Express JS</span>
-							<span class="skill">Critical Thingking</span>
-							<span class="skill">Problem Solving</span>
-							<span class="skill">Agile & Scrum Methodology</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Experience Section -->
-		<section class="timeline-section" id="experience">
-			<div class="container fadeInUp">
-				<h2>Pengalaman Kerja</h2>
-				<div class="timeline">
-					<div class="timeline-item">
-						<div class="timeline-icon"><i class="fas fa-laptop-code"></i></div>
-						<div class="timeline-content">
-							<h4>Asisten Laboratorium Web Framework Laravel</h4>
-							<span class="timeline-date">Universitas Mulawarman | Jul 2024 - Okt 2024</span>
-							<p>Membimbing mahasiswa dalam memahami konsep Laravel, membuat modul pembelajaran, studi kasus, dan mendampingi praktik langsung.</p>
-						</div>
-					</div>
-					<div class="timeline-item">
-						<div class="timeline-icon"><i class="fas fa-code-branch"></i></div>
-						<div class="timeline-content">
-							<h4>Full-Stack Web Developer</h4>
-							<span class="timeline-date">Pemprov Kalimantan Timur | Sep 2024 - Des 2024</span>
-							<p>Mengembangkan website <em>SIPPDEH</em> untuk pemantauan politik dan daerah, serta melatih operator di tiap kabupaten/kota.</p>
-						</div>
-					</div>
-					<div class="timeline-item">
-						<div class="timeline-icon"><i class="fas fa-database"></i></div>
-						<div class="timeline-content">
-							<h4>Full-Stack Web Developer</h4>
-							<span class="timeline-date">Pemprov Kalimantan Timur | Jan 2025 - Mei 2025</span>
-							<p>Membangun website <em>SIRPENA</em> untuk pelayanan surat rekomendasi penelitian, mencakup desain sistem, pengajuan surat, verifikasi, dan tracking status.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-
-		<!-- Portfolio Section -->
-		<section class="portfolio" id="portfolio">
-			<div class="container">
-				<div class="portfolio-header fadeInUp">
-					<h2>Portofolio Saya</h2>
-					<p>Berikut adalah beberapa proyek terbaru yang telah saya kerjakan</p>
-				</div>
-
-				<div class="portfolio-grid">
-					@forelse($proyek as $project)
-					<div class="portfolio-card fadeInUp">
-						<img src="{{ asset($project->gambar) }}" 
-							alt="{{ $project->nama }}" class="portfolio-img" />
-						<div class="portfolio-content">
-							<h3 title="{{ $project->nama }}">{{ $project->nama }}</h3>
-							<p title="{{ $project->deskripsi }}">{{ Str::limit($project->deskripsi, 80) }}</p>
-						</div>
-						<div class="portfolio-overlay">
-							<h3>{{ $project->nama }}</h3>
-							<p>{{ Str::limit($project->deskripsi, 120) }}</p>
-							<button class="btn btn-primary view-details"
-								data-title="{{ $project->nama }}"
-								data-img="{{ asset($project->gambar) }}"
-								data-tech="{{ $project->tech }}"
-								data-desc="{{ $project->deskripsi }}"
-								data-link="{{ $project->link }}">Lihat Detail</button>
-						</div>
-					</div>
-					@empty
-					<!-- Project Default jika belum ada data -->
-					<div class="portfolio-card fadeInUp">
-						<img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1674&q=80" 
-							alt="Proyek 1" class="portfolio-img" />
-						<div class="portfolio-content">
-							<h3>Aplikasi E-commerce</h3>
-							<p>Platform belanja online dengan pengalaman pengguna yang mulus dan proses pembayaran yang aman.</p>
-						</div>
-						<div class="portfolio-overlay">
-							<h3>Aplikasi E-commerce</h3>
-							<p>Platform belanja online dengan pengalaman pengguna yang mulus dan proses pembayaran yang aman.</p>
-							<button class="btn btn-primary view-details"
-								data-title="Aplikasi E-commerce"
-								data-img="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1674&q=80"
-								data-tech="HTML, CSS, JavaScript, Laravel, MySQL"
-								data-desc="Proyek ini adalah platform e-commerce full-stack dengan fitur keranjang belanja, checkout aman, dan dashboard admin."
-								data-link="https://contoh-project.com">Lihat Detail</button>
-						</div>
-					</div>
-
-					<div class="portfolio-card fadeInUp">
-						<img
-							src="https://images.unsplash.com/photo-1463171379579-3fdfb86d6285?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-							alt="Proyek 2"
-							class="portfolio-img"
-						/>
-						<div class="portfolio-content">
-							<h3>Sistem Manajemen Konten</h3>
-							<p>Platform CMS yang mudah digunakan dengan fitur drag-and-drop dan manajemen konten yang intuitif.</p>
-						</div>
-						<div class="portfolio-overlay">
-							<h3>Sistem Manajemen Konten</h3>
-							<p>Platform CMS yang mudah digunakan dengan fitur drag-and-drop dan manajemen konten yang intuitif.</p>
-							<button class="btn btn-primary view-details"
-								data-title="Sistem Manajemen Konten"
-								data-img="https://images.unsplash.com/photo-1463171379579-3fdfb86d6285?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-								data-tech="PHP, Laravel, MySQL, Bootstrap"
-								data-desc="Platform CMS yang mudah digunakan dengan fitur drag-and-drop dan manajemen konten yang intuitif untuk berbagai jenis website."
-								data-link="https://contoh-cms.com">Lihat Detail</button>
-						</div>
-					</div>
-
-					<div class="portfolio-card fadeInUp">
-						<img
-							src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-							alt="Proyek 3"
-							class="portfolio-img"
-						/>
-						<div class="portfolio-content">
-							<h3>Aplikasi Mobile Banking</h3>
-							<p>Aplikasi perbankan seluler dengan antarmuka yang bersih dan fitur keamanan tingkat tinggi.</p>
-						</div>
-						<div class="portfolio-overlay">
-							<h3>Aplikasi Mobile Banking</h3>
-							<p>Aplikasi perbankan seluler dengan antarmuka yang bersih dan fitur keamanan tingkat tinggi.</p>
-							<button class="btn btn-primary view-details"
-								data-title="Aplikasi Mobile Banking"
-								data-img="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-								data-tech="React Native, Node.js, MongoDB"
-								data-desc="Aplikasi perbankan seluler dengan antarmuka yang bersih dan fitur keamanan tingkat tinggi untuk transaksi yang aman."
-								data-link="https://contoh-banking.com">Lihat Detail</button>
-						</div>
-					</div>
-					@endforelse
-				</div>
-
-				<!-- Modal -->
-				<div id="portfolioModal" class="modal">
-					<div class="modal-content fadeInUp">
-						<span class="close">&times;</span>
-						<img id="modal-img" src="" alt="Project Image">
-						<h2 id="modal-title"></h2>
-						<p><strong>Teknologi:</strong> <span id="modal-tech"></span></p>
-						<p id="modal-desc"></p>
-						<a id="modal-link" href="#" target="_blank" class="btn btn-primary">Kunjungi Proyek</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Contact Section -->
-		<!-- Contact Section -->
-<section class="contact" id="contact">
-    <div class="container">
-        <div class="contact-container fadeInUp">
-            <div class="contact-card">
-                <h3>Informasi Kontak</h3>
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-text">
-                            <h4>Lokasi</h4>
-                            <p>Balikpapan, Indonesia</p>
-                        </div>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofolio Pribadi | Muhammad Harist Illyasa</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/poy.jpg') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/poy.jpg') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/poy.jpg') }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        h1, h2, h3, h4, .font-heading { 
+            font-family: 'Outfit', sans-serif; 
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animated Blob */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300 antialiased selection:bg-yellow-500/30 selection:text-yellow-400 overflow-x-hidden" x-data="{ mobileMenu: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
+
+    <!-- Background Gradients -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-96 h-96 bg-yellow-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header :class="scrolled ? 'glass shadow-lg py-3' : 'bg-transparent py-5'" class="fixed w-full top-0 z-50 transition-all duration-300 border-b border-transparent" :class="scrolled ? 'border-slate-800' : ''">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold font-heading tracking-tight text-white group flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-slate-900 text-lg font-bold">P</span>
+                Porto<span class="text-yellow-400 group-hover:text-white transition-colors">folio.</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    @foreach(['home' => 'Beranda', 'about' => 'Tentang', 'skills' => 'Keahlian', 'portfolio' => 'Karya', 'contact' => 'Kontak'] as $id => $label)
+                    <li>
+                        <a href="#{{ $id }}" class="text-slate-400 hover:text-yellow-400 font-medium text-sm transition-all duration-300 relative group py-2">
+                            {{ $label }}
+                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </nav>
+
+            <!-- CTA Button -->
+            <a href="#contact" class="hidden md:inline-flex px-5 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-medium text-sm transition-all border border-slate-700 hover:border-yellow-500/50 group items-center gap-2">
+                Let's Talk <i class="fas fa-arrow-right text-yellow-400 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+
+            <!-- Mobile Hamburger -->
+            <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white text-2xl focus:outline-none w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors">
+                <i class="fas" :class="mobileMenu ? 'fa-times' : 'fa-bars'"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             class="md:hidden absolute w-full glass border-b border-slate-800 shadow-xl">
+            <ul class="flex flex-col p-4 space-y-2">
+                @foreach(['home' => 'Beranda', 'about' => 'Tentang', 'skills' => 'Keahlian', 'portfolio' => 'Portofolio', 'contact' => 'Kontak'] as $id => $label)
+                <li>
+                    <a href="#{{ $id }}" @click="mobileMenu = false" class="block px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all">{{ $label }}</a>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 min-h-screen flex items-center">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+                <div class="lg:w-1/2 text-center lg:text-left space-y-8" data-aos="fade-up">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-xs font-semibold tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                        Available for work
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-text">
-                            <h4>Email</h4>
-                            <p>razak1352.com@gmail.com</p>
-                        </div>
+                    
+                    <h1 class="text-5xl lg:text-7xl font-bold leading-tight font-heading">
+                        Hi, I'm <br class="hidden lg:block"/>
+                        <span class="text-gradient">Harist Illyasa</span>
+                    </h1>
+                    
+                    <div class="text-xl md:text-2xl text-slate-400 h-8" x-data="{ 
+                        text: '', 
+                        words: ['Full-Stack Developer.', 'Laravel Specialist.', 'UI/UX Enthusiast.'],
+                        wordIndex: 0,
+                        charIndex: 0,
+                        isDeleting: false,
+                        type() {
+                            const currentWord = this.words[this.wordIndex];
+                            if (this.isDeleting) {
+                                this.text = currentWord.substring(0, this.charIndex - 1);
+                                this.charIndex--;
+                            } else {
+                                this.text = currentWord.substring(0, this.charIndex + 1);
+                                this.charIndex++;
+                            }
+                            
+                            if (!this.isDeleting && this.charIndex === currentWord.length) {
+                                this.isDeleting = true;
+                                setTimeout(() => this.type(), 2000);
+                            } else if (this.isDeleting && this.charIndex === 0) {
+                                this.isDeleting = false;
+                                this.wordIndex = (this.wordIndex + 1) % this.words.length;
+                                setTimeout(() => this.type(), 500);
+                            } else {
+                                setTimeout(() => this.type(), this.isDeleting ? 50 : 100);
+                            }
+                        }
+                    }" x-init="type()">
+                        I <span class="text-white border-r-2 border-yellow-400 pr-1" x-text="text"></span>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <div class="contact-text">
-                            <h4>Telepon</h4>
-                            <p>0895700171927</p>
-                        </div>
+                    
+                    <p class="text-lg text-slate-400 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                        Membangun solusi digital yang efisien, modern, dan scalable dengan fokus pada pengalaman pengguna yang luar biasa.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                        <a href="#portfolio" class="px-8 py-4 bg-yellow-500 text-slate-900 font-bold rounded-xl shadow-lg shadow-yellow-500/20 hover:bg-yellow-400 hover:-translate-y-1 transition-all duration-300">
+                            Lihat Karya Saya
+                        </a>
+                        <a href="#contact" class="px-8 py-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-all duration-300 border border-slate-700">
+                            Hubungi Saya
+                        </a>
+                    </div>
+                    
+                    <div class="pt-8 flex items-center justify-center lg:justify-start gap-6 text-2xl text-slate-500">
+                        <a href="https://github.com/harist13" target="_blank" class="hover:text-white hover:-translate-y-1 transition-all"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/muhammad-harist-illyasa-964719220/" target="_blank" class="hover:text-blue-400 hover:-translate-y-1 transition-all"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/haristllys_/" target="_blank" class="hover:text-pink-500 hover:-translate-y-1 transition-all"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
-                <h3>Sosial Media</h3>
-                <div class="social-links">
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-dribbble"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                
+                <div class="lg:w-1/2 flex justify-center" data-aos="fade-left">
+                    <div class="relative group">
+                        <!-- Decorative Frame -->
+                        <div class="absolute -inset-4 bg-gradient-to-r from-yellow-500 to-purple-600 rounded-[2rem] opacity-30 blur-xl group-hover:opacity-50 transition duration-1000"></div>
+                        
+                        <div class="relative rounded-[2rem] bg-slate-900 p-2 ring-1 ring-white/10">
+                            <img src="{{ asset('assets/poy.jpg') }}" alt="Profile" 
+                                 class="relative w-72 h-72 lg:w-96 lg:h-96 object-cover rounded-[1.8rem] shadow-2xl transition-transform duration-500 group-hover:scale-[1.01]">
+                        </div>
+
+                        <!-- Stats Card -->
+                        <div class="absolute -bottom-6 -left-6 bg-slate-800/90 backdrop-blur border border-slate-700 p-4 rounded-2xl shadow-xl z-20 hidden md:flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                            <div class="bg-yellow-500/20 p-3 rounded-xl text-yellow-400">
+                                <i class="fas fa-code text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Experience</p>
+                                <p class="font-bold text-white text-lg">Full-Stack Dev</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block">
+            <a href="#about" class="text-slate-500 hover:text-yellow-400 transition-colors">
+                <i class="fas fa-chevron-down text-xl"></i>
+            </a>
+        </div>
+    </section>
 
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-slate-900/50 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8" data-aos="fade-right">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white font-heading">
+                        Tentang <span class="text-gradient">Saya</span>
+                    </h2>
+                    <div class="space-y-4 text-slate-400 leading-relaxed text-lg">
+                        <p>
+                            Saya adalah seorang <strong class="text-white">Web Developer</strong> dengan passion tinggi dalam menciptakan aplikasi web yang fungsional dan estetis. Lulusan Sistem Informasi Universitas Mulawarman dengan IPK <strong class="text-yellow-400">3.86</strong>.
+                        </p>
+                        <p>
+                            Spesialisasi saya meliputi pengembangan <strong class="text-white">Full-Stack</strong> menggunakan Laravel, Tailwind CSS, dan React. Saya percaya bahwa kode yang baik harus bersih, efisien, dan mudah dipelihara.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-3xl text-yellow-400 mb-2">3.86</h4>
+                            <p class="text-sm text-slate-500 font-medium uppercase tracking-wider">IPK Cumlaude</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <h4 class="font-bold text-3xl text-yellow-400 mb-2">10+</h4>
+                            <p class="text-sm text-slate-500 font-medium uppercase tracking-wider">Proyek Selesai</p>
+                        </div>
+                    </div>
+                </div>
 
-		<!-- Footer -->
-		<footer>
-			<div class="container">
-				<div class="footer-content">
-					<div class="footer-logo">Porto<span>folio</span></div>
-					<p class="copyright">
-						© 2023 Muhammad Harist Illyasa. Hak Cipta Dilindungi.
-					</p>
-				</div>
-			</div>
-		</footer>
+                <div id="skills" class="space-y-8" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-white font-heading mb-6">Tech Stack & Tools</h3>
+                    
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4">
+                        @php
+                            $skills = [
+                                ['name' => 'HTML5', 'icon' => 'fa-html5', 'color' => 'text-orange-500'],
+                                ['name' => 'CSS3', 'icon' => 'fa-css3-alt', 'color' => 'text-blue-500'],
+                                ['name' => 'JavaScript', 'icon' => 'fa-js', 'color' => 'text-yellow-400'],
+                                ['name' => 'PHP', 'icon' => 'fa-php', 'color' => 'text-indigo-400'],
+                                ['name' => 'Laravel', 'icon' => 'fa-laravel', 'color' => 'text-red-500'],
+                                ['name' => 'Tailwind', 'icon' => 'fa-wind', 'color' => 'text-cyan-400'],
+                                ['name' => 'React', 'icon' => 'fa-react', 'color' => 'text-cyan-500'],
+                                ['name' => 'MySQL', 'icon' => 'fa-database', 'color' => 'text-blue-400'],
+                                ['name' => 'Git', 'icon' => 'fa-git-alt', 'color' => 'text-orange-600'],
+                                ['name' => 'NodeJS', 'icon' => 'fa-node-js', 'color' => 'text-green-500'],
+                            ];
+                        @endphp
+                        @foreach($skills as $skill)
+                        <div class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-3 group hover:bg-slate-800 transition-all duration-300 hover:-translate-y-2 border border-slate-800 hover:border-slate-600">
+                            <i class="fab {{ $skill['icon'] }} text-3xl {{ $skill['color'] }} group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-medium text-slate-400 group-hover:text-white">{{ $skill['name'] }}</span>
+                        </div>
+                        @endforeach
+                        
+                        <!-- Extra Soft Skill Badge -->
+                        <div class="col-span-2 glass-card p-4 rounded-2xl flex items-center justify-center text-center gap-2 group hover:bg-slate-800 transition-all hover:border-slate-600">
+                            <i class="fas fa-brain text-purple-400"></i>
+                            <span class="text-xs font-medium text-slate-400">Problem Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-		<script>
-			// Navigation Toggle for Mobile
-			const hamburger = document.getElementById("hamburger");
-			const navMenu = document.getElementById("nav-menu");
+    <!-- Experience & Education -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white font-heading">Perjalanan <span class="text-gradient">Karir</span></h2>
+                <div class="w-24 h-1 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
+            </div>
 
-			hamburger.addEventListener("click", () => {
-				navMenu.classList.toggle("active");
-			});
+            <div class="grid md:grid-cols-2 gap-12 lg:gap-20">
+                <!-- Education -->
+                <div data-aos="fade-right">
+                    <h3 class="text-xl font-bold text-white mb-8 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fas fa-graduation-cap"></i></span>
+                        Pendidikan
+                    </h3>
+                    <div class="space-y-8 pl-4 border-l-2 border-slate-800 ml-3">
+                        <div class="relative pl-8 group">
+                            <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-blue-500 group-hover:bg-blue-500 transition-colors"></span>
+                            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all">
+                                <span class="text-xs font-bold text-blue-400 mb-2 block">2021 - 2025</span>
+                                <h4 class="text-lg font-bold text-white">S1 Sistem Informasi</h4>
+                                <p class="text-sm text-slate-400 mt-1">Universitas Mulawarman</p>
+                                <p class="text-slate-500 text-sm mt-3 leading-relaxed">
+                                    Lulus dengan predikat Pujian (Cumlaude). Fokus skripsi pada pengembangan sistem informasi berbasis web.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="relative pl-8 group">
+                            <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-600 group-hover:bg-slate-600 transition-colors"></span>
+                            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all">
+                                <span class="text-xs font-bold text-slate-500 mb-2 block">2018 - 2021</span>
+                                <h4 class="text-lg font-bold text-white">Rekayasa Perangkat Lunak</h4>
+                                <p class="text-sm text-slate-400 mt-1">SMK Negeri 2 Balikpapan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-			// Close menu when clicking on a link
-			document.querySelectorAll(".nav-menu a").forEach((link) => {
-				link.addEventListener("click", () => {
-					navMenu.classList.remove("active");
-				});
-			});
+                <!-- Experience -->
+                <div data-aos="fade-left">
+                    <h3 class="text-xl font-bold text-white mb-8 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-sm"><i class="fas fa-briefcase"></i></span>
+                        Pengalaman Kerja
+                    </h3>
+                    <div class="space-y-8 pl-4 border-l-2 border-slate-800 ml-3">
+                        <div class="relative pl-8 group">
+                            <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-yellow-500 group-hover:bg-yellow-500 transition-colors"></span>
+                            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all shadow-lg shadow-yellow-500/5">
+                                <span class="text-xs font-bold text-yellow-400 mb-2 block">Sep - Des 2024</span>
+                                <h4 class="text-lg font-bold text-white">FreeLance Full-Stack Web Developer</h4>
+                                <p class="text-sm text-slate-400 mt-1">Client: Badan Kesatuan Bangsa Dan Politik Kalimantan Timur</p>
+                                <ul class="list-disc list-inside text-slate-500 text-sm mt-3 space-y-1">
+                                    <li>Membuat website SIPPDEH atau Sistem Informasi Pemantauan Politik dan Daerah.</li>
+                                    <li>Sistem ini meliputi manajemen data operator, kabupaten, kota, kecamatan,
+kelurahan, tps, paslon serta manajemen penginputan suara paslon.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="relative pl-8 group">
+                            <span class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-slate-600 group-hover:bg-slate-600 transition-colors"></span>
+                            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all">
+                                <span class="text-xs font-bold text-slate-500 mb-2 block">Jul - Okt 2024</span>
+                                <h4 class="text-lg font-bold text-white">Asisten Laboratorium</h4>
+                                <p class="text-sm text-slate-400 mt-1">Universitas Mulawarman</p>
+                                <p class="text-slate-500 text-sm mt-3 leading-relaxed">
+                                    Mentor bagi mahasiswa dalam mata kuliah Pemrograman Framework Laravel.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-			// Form Submission
-			const contactForm = document.getElementById("contactForm");
-			contactForm.addEventListener("submit", (e) => {
-				e.preventDefault();
-				alert("Pesan Anda telah terkirim! Saya akan menghubungi Anda segera.");
-				contactForm.reset();
-			});
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-slate-900/30" x-data="{ 
+        activeModal: null, 
+        projects: [
+             @forelse($proyek as $project)
+            {
+                id: {{ $project->id }},
+                title: '{{ addslashes($project->nama) }}',
+                desc: `{{ $project->deskripsi }}`,
+                tech: '{{ $project->tech }}',
+                img: '{{ asset($project->gambar) }}',
+                link: '{{ $project->link }}'
+            },
+            @empty
+            {
+                id: 1,
+                title: 'E-Commerce Platform',
+                desc: 'Platform belanja online modern dengan fitur lengkap.',
+                tech: 'Laravel, MySQL, Tailwind',
+                img: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1674&q=80',
+                link: '#'
+            },
+            {
+                id: 2,
+                title: 'CMS Dashboard',
+                desc: 'Dashboard admin untuk manajemen konten yang intuitif.',
+                tech: 'React, Node.js',
+                img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1740&q=80',
+                link: '#'
+            },
+            {
+                id: 3,
+                title: 'Finance App',
+                desc: 'Aplikasi pencatatan keuangan pribadi.',
+                tech: 'Vue.js, Firebase',
+                img: 'https://images.unsplash.com/photo-1554224155-984067941b71?auto=format&fit=crop&w=1740&q=80',
+                link: '#'
+            }
+            @endforelse
+        ]
+    }">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6" data-aos="fade-up">
+                <div>
+                    <span class="text-yellow-400 font-bold tracking-widest text-xs uppercase mb-2 block">Karya & Projek</span>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white font-heading">Portofolio <span class="text-slate-700">Terbaru</span></h2>
+                </div>
+                <div class="flex flex-col sm:flex-row items-end gap-4">
+                    <p class="text-slate-400 max-w-sm text-sm">
+                        Beberapa proyek pilihan yang telah saya kerjakan dengan dedikasi tinggi dan teknologi terkini.
+                    </p>
+                    <a href="{{ route('portfolio.export-pdf') }}" 
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl shadow-lg shadow-red-500/20 hover:from-red-600 hover:to-red-700 hover:-translate-y-1 transition-all duration-300 whitespace-nowrap group">
+                        <i class="fas fa-file-pdf text-lg group-hover:scale-110 transition-transform"></i>
+                        <span>Export PDF</span>
+                    </a>
+                </div>
+            </div>
 
-			// Smooth Scrolling
-			document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-				anchor.addEventListener("click", function (e) {
-					e.preventDefault();
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template x-for="(project, index) in projects" :key="project.id">
+                    <div class="group relative rounded-2xl overflow-hidden bg-slate-800 border border-slate-700 shadow-xl cursor-pointer"
+                         :data-aos="'fade-up'" :data-aos-delay="index * 100"
+                         @click="activeModal = project">
+                        
+                        <!-- Image -->
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img :src="project.img" :alt="project.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                        </div>
+                        
+                        <!-- Overlay Content -->
+                        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <h3 class="text-xl font-bold text-white mb-1" x-text="project.title"></h3>
+                            <div class="flex flex-wrap gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <template x-for="tech in project.tech.split(',').slice(0,3)">
+                                    <span class="text-[10px] px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-full border border-yellow-500/20" x-text="tech.trim()"></span>
+                                </template>
+                            </div>
+                        </div>
 
-					const targetId = this.getAttribute("href");
-					const targetElement = document.querySelector(targetId);
+                        <!-- Hover Icon -->
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-[-10px] group-hover:translate-y-0">
+                            <i class="fas fa-arrow-up-right text-sm"></i>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
 
-					window.scrollTo({
-						top: targetElement.offsetTop - 70,
-						behavior: "smooth",
-					});
-				});
-			});
+        <!-- Project Modal -->
+        <div x-show="activeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             style="display: none;">
+            
+            <div class="bg-slate-900 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-700 relative flex flex-col md:flex-row overflow-hidden"
+                 @click.away="activeModal = null"
+                 x-transition:enter="transition cubic-bezier(0.34, 1.56, 0.64, 1) duration-500"
+                 x-transition:enter-start="opacity-0 scale-90 translate-y-8"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+                
+                <button @click="activeModal = null" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors text-white">
+                    <i class="fas fa-times"></i>
+                </button>
 
-			// Animation on Scroll
-			const fadeElements = document.querySelectorAll(".fadeInUp");
+                <!-- Image Side -->
+                <div class="md:w-3/5 bg-black flex items-center justify-center p-4">
+                    <img :src="activeModal?.img" :alt="activeModal?.title" class="max-h-[60vh] md:max-h-full object-contain rounded-lg shadow-lg">
+                </div>
+                
+                <!-- Content Side -->
+                <div class="md:w-2/5 p-8 flex flex-col">
+                    <h3 class="text-3xl font-bold text-white mb-2 leading-tight" x-text="activeModal?.title"></h3>
+                    
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <template x-if="activeModal">
+                            <template x-for="tech in activeModal.tech.split(',')">
+                                <span class="px-3 py-1 bg-slate-800 text-slate-300 text-xs font-medium rounded-full border border-slate-700" x-text="tech.trim()"></span>
+                            </template>
+                        </template>
+                    </div>
 
-			const observer = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.style.animation = "fadeInUp 0.8s ease forwards";
-							observer.unobserve(entry.target);
-						}
-					});
-				},
-				{
-					threshold: 0.1,
-				}
-			);
+                    <div class="prose prose-invert prose-sm text-slate-400 leading-relaxed mb-auto overflow-y-auto max-h-60 pr-2 custom-scroll"
+                         x-html="activeModal?.desc">
+                    </div>
 
-			fadeElements.forEach((el) => {
-				observer.observe(el);
-			});
-		</script>
+                    <div class="pt-6 mt-6 border-t border-slate-800 flex gap-4">
+                        <template x-if="activeModal?.link">
+                            <a :href="activeModal.link" target="_blank" class="flex-1 text-center px-6 py-3 bg-yellow-500 text-slate-900 font-bold rounded-xl hover:bg-yellow-400 transition-all shadow-lg hover:shadow-yellow-500/20">
+                                <i class="fas fa-external-link-alt mr-2"></i> Live Demo
+                            </a>
+                        </template>
+                        <button @click="activeModal = null" class="px-6 py-3 border border-slate-700 text-slate-300 font-bold rounded-xl hover:bg-slate-800 transition-all">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-		<script>
-			// Modal Portfolio
-const modal = document.getElementById("portfolioModal");
-const modalImg = document.getElementById("modal-img");
-const modalTitle = document.getElementById("modal-title");
-const modalTech = document.getElementById("modal-tech");
-const modalDesc = document.getElementById("modal-desc");
-const modalLink = document.getElementById("modal-link");
-const closeModal = document.querySelector(".modal .close");
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute inset-0 z-[-1] bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto glass p-8 md:p-12 rounded-3xl border border-slate-700/50 shadow-2xl" data-aos="zoom-in-up">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white font-heading">Mari Berkolaborasi</h2>
+                    <p class="text-slate-400 mt-4">Punya ide proyek menarik atau ingin berdiskusi? Kirimkan pesan Anda.</p>
+                </div>
 
-document.querySelectorAll(".view-details").forEach(btn => {
-    btn.addEventListener("click", function() {
-        modal.style.display = "block";
-        modalImg.src = this.dataset.img;
-        modalTitle.textContent = this.dataset.title;
-        modalTech.textContent = this.dataset.tech;
-        modalDesc.textContent = this.dataset.desc;
-        modalLink.href = this.dataset.link;
-    });
-});
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Contact Info -->
+                    <div class="space-y-6 md:col-span-1 border-r border-slate-700/50 pr-0 md:pr-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 uppercase font-bold">Email</p>
+                                <a href="mailto:haristillyasa13@gmail.com" class="text-white text-sm hover:text-yellow-400 transition-colors">haristillyasa13@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-yellow-500">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 uppercase font-bold">WhatsApp</p>
+                                <p class="text-white text-sm">0895-7001-71927</p>
+                            </div>
+                        </div>
+                        <div class="pt-6">
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-3">Socials</p>
+                            <div class="flex gap-3">
+                                <a href="https://github.com/harist13" class="w-9 h-9 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-white hover:text-black transition-all"><i class="fab fa-github"></i></a>
+                                <a href="https://www.linkedin.com/in/muhammad-harist-illyasa-964719220/" class="w-9 h-9 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://www.instagram.com/haristllys_/" class="w-9 h-9 rounded bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
 
-closeModal.onclick = function() {
-    modal.style.display = "none";
-};
+                    <!-- Form -->
+                    <form action="#" class="md:col-span-2 space-y-4" onsubmit="event.preventDefault(); alert('Terima kasih! Pesan Anda (Demo) telah terkirim.');">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-slate-500 uppercase ml-1">Nama</label>
+                                <input type="text" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-all placeholder-slate-600" placeholder="John Doe">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-slate-500 uppercase ml-1">Email</label>
+                                <input type="email" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-all placeholder-slate-600" placeholder="john@example.com">
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase ml-1">Pesan</label>
+                            <textarea rows="4" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-all placeholder-slate-600" placeholder="Ceritakan tentang proyek Anda..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 font-bold rounded-xl shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] transition-all duration-300">
+                            Kirim Pesan <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-window.onclick = function(e) {
-    if (e.target == modal) {
-        modal.style.display = "none";
-    }
-};
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-8 text-center text-slate-600 border-t border-slate-900">
+        <div class="container mx-auto px-6">
+            <p>&copy; 2024 Muhammad Harist Illyasa. All Rights Reserved.</p>
+            <p class="text-xs mt-2">Built with <span class="text-red-500">❤</span> using Laravel & Tailwind</p>
+        </div>
+    </footer>
 
-		</script>
-	</body>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic'
+        });
+    </script>
+</body>
 </html>

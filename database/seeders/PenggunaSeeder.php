@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\pengguna;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 class PenggunaSeeder extends Seeder
 {
@@ -13,10 +13,13 @@ class PenggunaSeeder extends Seeder
      */
     public function run(): void
     {
-        pengguna::create([
-            'nama' => 'Administrator',
-            'username' => 'admin',
-            'password' => Hash::make('12345678'),
-        ]);
+        pengguna::updateOrCreate(
+            ['username' => 'admin'],
+            [
+                'nama' => 'Administrator',
+                'password' => 'admin123', // Cast 'hashed' di model akan otomatis hash
+                'role' => 'admin',
+            ]
+        );
     }
 }
